@@ -1,4 +1,5 @@
 // starts with a blank slate for a cleaner appearance
+// used throughout whenever we advance to a new "screen"
 console.clear()
 
 // creates callable prompt function
@@ -11,6 +12,7 @@ function enterToContinue() {
 }
 
 // creates a health system that stores and updates condition
+// starts at life[2] in event of player healing at "healthy"
 const life = [`ULTRA HEALTHY`,`SUPER HEALTHY`,`HEALTHY`,`INJURED`,`DYING`, `DEAD`]
 let currentLife = 2
 function updateLife(upordown) {
@@ -21,6 +23,8 @@ function updateLife(upordown) {
     }
     const updatedLife = life[currentLife]
     console.log(`You are now ${updatedLife}!\n`)
+
+    // displays game over message and exits game prematurely
     if (updatedLife == `DEAD`) {
         console.log("GAME OVER\n")
         prompt(`(Press ENTER to exit, ${username})`)
@@ -42,12 +46,17 @@ console.log(`Welcome, ${username}!
 You are about to embark on a perilous journey. Filled to the
 brim with danger, daring and worst of all... headwear!
 
+It won't be easy and it may take several attempts, but don't
+be afraid to try again!
+
 This is...
 
 HAT QUEST!!!\n`)
 
+// this function will be used to hold text on screen when no choice is required
 enterToContinue()
 
+// first story event; logged out of "prompt" due to length error
 console.log(`Poor ${username}... A dark road stretches out before you.
 
 A chill wind blows through the shadows of black trees. Home is
@@ -82,7 +91,7 @@ while (true) {
 The HAT sprouts teeth and chomps your head! You yank it off
 your dome hurriedly!\n`)
         updateLife(`down`)
-        break
+        break // used throughout to exit current infinite loop
     } else if (choice == 2) {
         console.clear()
         console.log(`Wise choice, ${username}!
@@ -105,7 +114,7 @@ Where do you run to?
 
 (Press a number key followed by ENTER)`)
 
-// infinite loop that determines which if statement will be read next
+// infinite loop that decides which statement in main game branch will be read first
 while (true) {
     let choice = prompt(`> `)
     if (choice == 1) {
@@ -130,6 +139,7 @@ the dim outline of an enormous mountain...\n`)
     
 enterToContinue()
 
+// main game branch; starting position determined earlier
 while (true) {
     if (destination == `forest`) {
         console.log(`Evil laughter seems to follow you, ${username}. You keep running
@@ -152,7 +162,7 @@ What do you do?
 You find it was another traveler. They now lie motionless at
 your feet. Are you really any better than the evil HAT from
 the path...?\n`)
-                forestVisited = true
+                forestVisited = true // prevents repeated story events
                 enterToContinue()
                 break
             } else if (choice == 2) {
@@ -249,7 +259,7 @@ you look damn good in that HAT!\n`)
                 console.clear()
                 console.log(`The singing stops and a vengeful scream fills the air!
                     
-A shadowy claw smack into you!\n`)
+A shadowy claw smacks into you!\n`)
                 updateLife(`down`)
                 console.log(`Just for good measure, it smacks you again!\n`)
                 updateLife(`down`)
@@ -259,10 +269,12 @@ A shadowy claw smack into you!\n`)
             } else {console.log(`Please enter a valid number!`)}
         }
     }
+    // directs player to final choice once all events are complete
     if (forestVisited && pathVisited && mountainVisited) {
         break
     }
     console.clear()
+    // "hub" that allows player to choose their next zone
     console.log(`It seems this place holds no more mystery. Where to next?
     
 1: Check out the forest.
@@ -270,6 +282,7 @@ A shadowy claw smack into you!\n`)
 3: Follow the mysterious singing.
             
 (Press a number key followed by ENTER)`)
+    // infinite loop that changes "destination" and prevents repeats
     while (true) {
         let choice = prompt(`> `)
         if (choice == 1) {
@@ -300,18 +313,27 @@ A shadowy claw smack into you!\n`)
     }
 }
 
+// final choice once main loop is exited via "&&->break" conditional above
+// only (and automatically) triggers once player has explored all zones
 console.log(`Trudging off into the unknown, you see a faint shimmering light.
     
 The light materializes into the form of a beautiful woman. She
-wears no HAT. Strange. She speaks in an unearthly tone...
+wears no HAT. Strange. She speaks in an unearthly tone...\n`)
 
-"You have survived this world of brutal darkness and cranial
+// splits up denouement into multiple screens for tension
+enterToContinue()
+
+console.log(`"You have survived this world of brutal darkness and cranial
 accessories. I am most impressed. It is time I tell you the
 secret of this place. It has all been in your head. You hit
 your head after buying a beanie from H&M. A lamp-post fell
 right on top of you. If not for the beanie, you'd be dead."
 
-You consider this... Could it be the truth? She speaks again.
+You consider this... Could it be the truth?\n`)
+
+enterToContinue()
+
+console.log(`The pale lady speaks again...
 
 "All you need to do to leave is choose to re-enter the waking
 world. Or... You could stay here in the land of shadow and
@@ -324,6 +346,7 @@ What do you do?
             
 (Press a number key followed by ENTER)`)
 
+// determines ending of story, but leads to "the end" either way
 while (true) {
     let choice = prompt(`> `)
     if (choice == 1) {
@@ -338,7 +361,7 @@ non-magical life. But at least you're alive!\n`)
     } else {console.log(`Please enter a valid number!`)}
 }
 
-// ends the story and auto-exits the program
+// ends the story and auto-exits the program neatly
 console.log(`The End\n`)
 prompt(`(Press ENTER to exit, ${username})`)
 console.clear()
